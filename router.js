@@ -56,7 +56,7 @@ function generatePollResponseTwiML(vote) {
             
     let twiml = new VoiceResponse();
     
-    if (digit === '5' || digit === '6') {
+    if (vote === '5' || vote === '6') {
         const pollChoice = vote === '5' ? 'Cake is superior.' : 'Pie is amazing.'
         twiml.say(
             `Your vote has been recorded. Your choice was ${pollChoice}
@@ -92,7 +92,7 @@ router.post("/recordingStatus", (request, response) => {
     console.log("\n\n\n -------------------------------------------------");
     console.log("\n\n\n   recordingStatusBody", recordingStatusBody);
     console.log("\n\n\n -------------------------------------------------");
-    saveRecordingUrl(request.Body);
+    saveRecordingUrl(request.body);
 
     response.end();
 })
@@ -115,9 +115,9 @@ function saveVote(vote, callSid) {
     }
 }
 
-function saveRecordingUrl(requestBody) {
-    const voteIndex = votes.findIndex(vote => vote.callSid == requestBody.CallSid);
-    votes[voteIndex].recordingUrl = `${requestBody.RecordingUrl}.mp3`;
+function saveRecordingUrl({ CallSid, RecordingUrl }) {
+    const voteIndex = votes.findIndex(vote => vote.callSid == CallSid);
+    votes[voteIndex].recordingUrl = `${RecordingUrl}.mp3`;
 }
 
 
